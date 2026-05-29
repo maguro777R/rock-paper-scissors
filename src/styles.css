@@ -1,0 +1,457 @@
+:root {
+  color: #f8f1e6;
+  background: #181210;
+  font-family:
+    "Hiragino Sans", "Yu Gothic", "YuGothic", "Noto Sans JP", system-ui,
+    sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --panel: rgba(28, 21, 18, 0.78);
+  --panel-strong: rgba(16, 12, 11, 0.88);
+  --line: rgba(248, 230, 200, 0.22);
+  --paper: #f6e7cf;
+  --ink: #1c1411;
+  --red: #a7342d;
+  --indigo: #253954;
+  --gold: #d4a348;
+  --green: #496b55;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+}
+
+button {
+  font: inherit;
+}
+
+.game-shell {
+  min-height: 100vh;
+}
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, rgba(15, 11, 10, 0.88), rgba(15, 11, 10, 0.28)),
+    url("/assets/dojo-background.png") center / cover;
+}
+
+.hero__shade {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 74% 25%, rgba(255, 240, 197, 0.16), transparent 28%),
+    linear-gradient(180deg, rgba(9, 7, 6, 0.04), rgba(9, 7, 6, 0.42));
+  pointer-events: none;
+}
+
+.game-layout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(360px, 580px) minmax(240px, 360px);
+  grid-template-rows: 1fr auto;
+  gap: 12px;
+  width: min(1180px, calc(100% - 32px));
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 12px 0;
+  align-items: center;
+}
+
+.duel-panel,
+.history-panel,
+.opponent-card {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(10px);
+}
+
+.duel-panel {
+  display: grid;
+  gap: 12px;
+  padding: clamp(16px, 2vw, 22px);
+  border-radius: 8px;
+}
+
+.round-status,
+.history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.round-status span,
+.history-header span,
+.scoreboard span,
+.opponent-readout span,
+.result-box span,
+.match-result span,
+.opponent-card span,
+.eyebrow {
+  color: rgba(248, 241, 230, 0.72);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.round-status strong {
+  color: var(--gold);
+  font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+}
+
+.title-block {
+  display: grid;
+  gap: 6px;
+}
+
+.title-block h1 {
+  margin: 0;
+  color: #fff7eb;
+  font-size: clamp(2.4rem, 5vw, 4.4rem);
+  line-height: 0.92;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.title-block p {
+  max-width: 34rem;
+  margin: 0;
+  color: rgba(248, 241, 230, 0.82);
+  line-height: 1.75;
+}
+
+.scoreboard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 249, 237, 0.08);
+}
+
+.scoreboard div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  padding: 10px 14px;
+  text-align: center;
+}
+
+.scoreboard div + div {
+  border-left: 1px solid var(--line);
+}
+
+.scoreboard strong {
+  font-size: 1.45rem;
+}
+
+.move-area {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 12px;
+}
+
+.opponent-readout,
+.result-box,
+.match-result {
+  min-height: 96px;
+  padding: 13px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-strong);
+}
+
+.opponent-readout {
+  display: grid;
+  align-content: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.opponent-readout strong {
+  color: var(--paper);
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+}
+
+.result-box {
+  display: grid;
+  align-content: center;
+  gap: 5px;
+}
+
+.result-box strong,
+.match-result strong {
+  color: #fff7eb;
+  font-size: clamp(1.1rem, 2.6vw, 1.7rem);
+}
+
+.result-box p,
+.match-result p,
+.opponent-card p {
+  margin: 0;
+  color: rgba(248, 241, 230, 0.78);
+  line-height: 1.65;
+}
+
+.move-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.move-button,
+.reset-button {
+  min-height: 58px;
+  border: 1px solid rgba(246, 231, 207, 0.28);
+  border-radius: 8px;
+  color: #fff8ec;
+  background: linear-gradient(180deg, rgba(167, 52, 45, 0.95), rgba(92, 28, 25, 0.95));
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    filter 160ms ease;
+}
+
+.move-button {
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+  padding: 12px 10px;
+}
+
+.move-button span {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 999px;
+  color: var(--ink);
+  background: var(--paper);
+  font-weight: 900;
+}
+
+.move-button strong {
+  font-size: 1rem;
+}
+
+.move-button:hover:not(:disabled),
+.reset-button:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 244, 220, 0.58);
+  filter: brightness(1.06);
+}
+
+.move-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+.reset-button {
+  min-height: 46px;
+  background: linear-gradient(180deg, rgba(37, 57, 84, 0.96), rgba(22, 34, 50, 0.96));
+}
+
+.match-result {
+  min-height: auto;
+  border-color: rgba(212, 163, 72, 0.55);
+  background: rgba(61, 43, 25, 0.86);
+}
+
+.opponent-panel {
+  align-self: center;
+}
+
+.opponent-card {
+  display: grid;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.opponent-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 50% 18%;
+}
+
+.opponent-card div {
+  display: grid;
+  gap: 5px;
+  padding: 14px 16px 16px;
+  background: rgba(17, 13, 12, 0.9);
+}
+
+.opponent-card strong {
+  color: #fff7eb;
+  font-size: 1.3rem;
+}
+
+.history-panel {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.history-panel ol {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.history-panel li {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  min-height: 58px;
+  padding: 7px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 249, 237, 0.08);
+}
+
+.history-panel li strong,
+.history-panel li span,
+.history-panel li em {
+  overflow-wrap: anywhere;
+}
+
+.history-panel li span {
+  color: rgba(248, 241, 230, 0.66);
+  font-size: 0.72rem;
+}
+
+.history-panel li strong {
+  color: #fff8ec;
+  font-size: 0.92rem;
+}
+
+.history-panel li em {
+  align-self: end;
+  color: rgba(248, 241, 230, 0.76);
+  font-size: 0.82rem;
+  font-style: normal;
+}
+
+.history-panel li.is-win {
+  border-color: rgba(212, 163, 72, 0.7);
+}
+
+.history-panel li.is-loss {
+  border-color: rgba(167, 52, 45, 0.7);
+}
+
+.history-panel li.is-draw {
+  border-color: rgba(73, 107, 85, 0.78);
+}
+
+@media (max-width: 860px) {
+  .hero {
+    min-height: 100svh;
+    overflow: auto;
+    background-position: center;
+  }
+
+  .game-layout {
+    grid-template-columns: 1fr;
+    min-height: 100svh;
+    width: min(100% - 20px, 640px);
+    padding: 12px 0;
+    align-items: start;
+  }
+
+  .duel-panel {
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .title-block h1 {
+    font-size: clamp(2.1rem, 12vw, 3rem);
+  }
+
+  .move-area {
+    grid-template-columns: 1fr;
+  }
+
+  .opponent-readout,
+  .result-box {
+    min-height: 88px;
+  }
+
+  .opponent-panel {
+    order: 3;
+  }
+
+  .history-panel {
+    order: 2;
+  }
+
+  .history-panel ol {
+    grid-template-columns: 1fr;
+  }
+
+  .history-panel li {
+    grid-template-columns: 72px 1fr 42px;
+    align-items: center;
+    min-height: 50px;
+  }
+
+  .opponent-card {
+    grid-template-columns: 110px 1fr;
+  }
+
+  .opponent-card img {
+    height: 100%;
+    aspect-ratio: auto;
+  }
+}
+
+@media (max-width: 460px) {
+  .game-layout {
+    width: min(100% - 16px, 420px);
+  }
+
+  .scoreboard div {
+    padding: 10px 8px;
+  }
+
+  .move-buttons {
+    gap: 8px;
+  }
+
+  .move-button {
+    min-height: 70px;
+    padding: 9px 6px;
+  }
+
+  .move-button span {
+    width: 34px;
+    height: 34px;
+  }
+
+  .move-button strong {
+    font-size: 0.9rem;
+  }
+
+  .opponent-card {
+    grid-template-columns: 92px 1fr;
+  }
+}
